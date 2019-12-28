@@ -34,26 +34,38 @@ class App extends React.Component {
         }
     }
 
-    disableValue = () => {
-        if (this.state.count === 5 || this.state.count === -5) {
-            this.setState({
-                disable: this.state.disable = true
-            })
-        }
-
-    }
+    // disableValue = () => {
+    //     if (this.state.count === 5 || this.state.count === -5) {
+    //         this.setState({
+    //             disable: this.state.disable = true
+    //         })
+    //     }
+    //
+    // }
 
     render = () => {
         return (
             <div className='app'>
-                <div className='mainBlock'>
-                    <Count count={this.state.count}/>
-                    <BlockButton
-                        buttonClick={this.buttonAdd}
-                        buttonReset={this.buttonReset}
-                        buttonBack={this.buttonBack}
-                        count={this.state.count}
-                    />
+                <div className="settingsBlock">
+                    <div className="block">
+                        <span className='span'>Enter value</span>
+                        <input type="text" placeholder='MaxValue'/>
+                        <input type="text" placeholder='MinValue'/>
+                        <button className='button'>Apply</button>
+                    </div>
+                </div>
+                <div className='counter'>
+                    <div className='mainBlock'>
+                        <Count
+                            count={this.state.count}
+                        />
+                        <BlockButton
+                            buttonClick={this.buttonAdd}
+                            buttonReset={this.buttonReset}
+                            buttonBack={this.buttonBack}
+                            count={this.state.count}
+                        />
+                    </div>
                 </div>
             </div>
         )
