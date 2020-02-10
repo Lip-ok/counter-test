@@ -2,21 +2,24 @@ import React from 'react';
 import './App.css';
 import BlockButton from "./components/BlockButton";
 import Count from "./components/Count";
+import Settings from "./components/Settings";
+import {connect} from "react-redux";
 
 class App extends React.Component {
 
     state = {
         count: 0,
+        maxValue: 10,
+        minValue: 0,
     }
 
     buttonAdd = () => {
-        if (this.state.count < 5) {
-            this.setState({
-                count: this.state.count + 1
-            })
+        if (this.props.count < this.props.maxValue) {
+            this.props.incrValue(this.state.count + 1)
         } else {
             this.setState({
-                disable: true
+                disabled: this.props.disabled = true //Сделать десаблед либо убрать вовсе и
+                // переписать полностью счётчик сразу на редаксе
             })
         }
     }
@@ -27,39 +30,44 @@ class App extends React.Component {
     }
     buttonBack = () => {
         debugger
-        if (this.state.count > -5) {
+        if (this.state.count > this.state.minValue) {
             this.setState({
                 count: this.state.count - 1
             })
         }
     }
 
-    // disableValue = () => {
-    //     if (this.state.count === 5 || this.state.count === -5) {
-    //         this.setState({
-    //             disable: this.state.disable = true
-    //         })
-    //     }
-    //
-    // }
+    onMaxValueChange = ( maxValue) =>{
+        this.setState({
+            maxValue: maxValue
+        });
+    }
+    onMinValueChange = (minValue) =>{
+        this.setState({
+            minValue: minValue
+        });
+    }
+
 
     render = () => {
         return (
             <div className='app'>
-                <div className="settingsBlock">
-                    <div className="block">
-                        <span className='span'>Enter value</span>
-                        <input type="text" placeholder='MaxValue'/>
-                        <input type="text" placeholder='MinValue'/>
-                        <button className='button'>Apply</button>
-                    </div>
-                </div>
+                <Settings applySettings={this.applySettings}
+                          onMaxValueChange={this.onMaxValueChange}
+                          onMinValueChange={this.onMinValueChange}
+                            state={this.state}
+                />
+
                 <div className='counter'>
                     <div className='mainBlock'>
                         <Count
+                            minValue={this.state.minValue}
+                            maxValue={this.state.maxValue}
                             count={this.state.count}
                         />
                         <BlockButton
+                            minValue={this.state.minValue}
+                            maxValue={this.state.maxValue}
                             buttonClick={this.buttonAdd}
                             buttonReset={this.buttonReset}
                             buttonBack={this.buttonBack}
@@ -73,5 +81,15 @@ class App extends React.Component {
     };
 };
 
-export default App;
+let mapStateToProps = (state)=> {
+    return state;
+}
+    let mapDispatchToProps = (dispatch)=>{
+        return{
+            incrValue:()=>{
+                dispatch();
+            }
+        }
+    }
+export default connect(mapStateToProps, mapDispatchToProps)(App) ;
 
